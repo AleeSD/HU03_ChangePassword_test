@@ -1,0 +1,47 @@
+    <!-- index.html -->
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <title>Change Password</title>
+    </head>
+    <body>
+    <h2>Change Password</h2>
+    <form id="changePasswordForm">
+        <label>Current Password:</label><br>
+        <input type="password" name="current_password"><br>
+        <label>New Password:</label><br>
+        <input type="password" name="new_password"><br>
+        <label>Confirm Password:</label><br>
+        <input type="password" name="confirm_password"><br>
+        <button type="submit">Change</button>
+    </form>
+
+    <p id="response"></p>
+
+    <script>
+        const form = document.getElementById('changePasswordForm');
+        form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const data = new FormData(form);
+
+        const payload = {
+            current_password: data.get('current_password'),
+            new_password: data.get('new_password'),
+            confirm_password: data.get('confirm_password'),
+        };
+
+        const response = await fetch('http://127.0.0.1:8000/api/change-password/', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+        document.getElementById('response').innerText = JSON.stringify(result);
+        });
+    </script>
+    </body>
+    </html>
